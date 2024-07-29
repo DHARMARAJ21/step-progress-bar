@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step Progress Bar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: yellow;
+        }
+        h1{
+            text-align: center;
+            font-size: 40px;
+        }
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 60px;
+            position: relative;
+        }
+        .progress-container::before {
+            content: '';
+            background:rgb(202, 189, 189);
+            height: 5px;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+        .progress {
+            background: #4caf50;
+            height: 5px;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            z-index: -1;
+            width: 0;
+        }
+        .step {
+            background: rgb(202, 189, 189);
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            color: #fff;
+        }
+        .step.active {
+            background: #4caf50;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 10px;
+            background-color: rgb(156, 103, 172);
+        }
+        
+        h3{
+            color: #4caf50;
+            margin-top: -50px;
+            margin-left: 55px;
+            font-size: 30px;
+        }
+        .button{
+            display:flex;
+            justify-content: center;
+        }
+        #next,#prev{
+            font-size: 30px;
+            
+        }
+        .center{
+            margin-top: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>Step Progress Bar</h1>
+        <div class="progress-container">
+            
+            <div class="progress" id="progress"></div>
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+            <div class="step">4</div>
+            <div class="step">5</div>
+        </div><br>
+        <h3>Start</h3>
+        <div class="button">
+            <button id="prev" disabled>&larr;</button>
+            <button id="next">&rarr;</button>
+        </div>
+    </div>
+        
+        <script>
+            const progress = document.getElementById('progress');
+            const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const steps = document.querySelectorAll('.step');
+
+let currentStep = 1;
+
+next.addEventListener('click', () => {
+    currentStep++;
+    if (currentStep > steps.length) {
+        currentStep = steps.length;
+    }
+    updateProgress();
+});
+
+prev.addEventListener('click', () => {
+    currentStep--;
+    if (currentStep < 1) {
+        currentStep = 1;
+    }
+    updateProgress();
+});
+
+function updateProgress() {
+    steps.forEach((step, index) => {
+        if (index < currentStep) {
+            step.classList.add('active');
+        } else {
+            step.classList.remove('active');
+        }
+    });
+
+    progress.style.width = ((currentStep - 1) / (steps.length - 1)) * 100 + '%';
+
+    if (currentStep === 1) {
+        prev.disabled = true;
+    } else if (currentStep === steps.length) {
+        next.disabled = true;
+    } else {
+        prev.disabled = false;
+        next.disabled = false;
+    }
+}
+
+    </script>
+</body>
+</html>
